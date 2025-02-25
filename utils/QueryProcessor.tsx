@@ -19,14 +19,13 @@ export default function QueryProcessor(query: string): string {
     return true;
   }
 
-
   function findNumbersThatAreSquaresAndCubes(numbers: number[]): number[] {
     const results: number[] = [];
-  
+
     for (const x of numbers) {
       let isSquare = false;
       let isCube = false;
-  
+
       // Check if x = y^2 for some y in the list
       for (const y of numbers) {
         if (y * y === x) {
@@ -34,7 +33,7 @@ export default function QueryProcessor(query: string): string {
           break;
         }
       }
-  
+
       // Check if x = z^3 for some z in the list
       for (const z of numbers) {
         if (z * z * z === x) {
@@ -42,15 +41,14 @@ export default function QueryProcessor(query: string): string {
           break;
         }
       }
-  
+
       if (isSquare && isCube) {
         results.push(x);
       }
     }
-  
+
     return results;
   }
-  
 
   function handleQuery(query: string) {
     const numbers = query.match(/\d+/g)?.map(Number);
@@ -81,7 +79,15 @@ export default function QueryProcessor(query: string): string {
       return `${num1 * num2}`;
     }
 
-    // Handle square and cube detection (6th power)
+    // Handle power/exponent queries
+    const powerMatch = /what is (\d+) to the power of (\d+)\s*\?/i.exec(query);
+    if (powerMatch) {
+      const [_, base, exponent] = powerMatch.map(BigInt);
+      const result = base ** exponent;
+      return `${result.toString()}`;
+    }
+
+    // Handle square and cube detection
     if (
       query.toLowerCase().includes("both a square and a cube") &&
       numbers
