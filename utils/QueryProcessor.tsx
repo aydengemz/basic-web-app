@@ -11,18 +11,36 @@ export default function QueryProcessor(query: string): string {
     return "Ayden";
   }
 
-  function getLargestNumber(query: string) {
-    const numbers = query.match(/\d+/g)?.map(Number); // Extract numbers from the query
-    if (numbers && numbers.length > 0) {
-      return `${Math.max(...numbers)}`; 
+  function handleQuery(query: string) {
+    // Handle largest number queries
+    if (query.toLowerCase().includes("largest: ")) {
+      const numbers = query.match(/\d+/g)?.map(Number);
+      if (numbers && numbers.length > 0) {
+        return `${Math.max(...numbers)}`;
+      }
     }
-    return ""; 
+  
+    // Handle addition queries
+    const additionMatch = query.toLowerCase().match(/what is (\d+) plus (\d+)\s*\?/);
+    if (additionMatch) {
+      const num1 = parseInt(additionMatch[1]);
+      const num2 = parseInt(additionMatch[2]);
+      return `${num1 + num2}`;
+    }
+  
+    // Default response if no match
+    return "";
   }
   
-  // Example usage:
+  
   if (query.toLowerCase().includes("largest: ")) {
-    return getLargestNumber(query);
+    return handleQuery(query);
   }
+  if (query.toLowerCase().includes("plus")) {
+    return handleQuery(query);
+  }
+
+
   
 
 
