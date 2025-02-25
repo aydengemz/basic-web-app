@@ -11,9 +11,23 @@ export default function QueryProcessor(query: string): string {
     return "Ayden";
   }
 
+  function isPrime(n: number): boolean {
+    if (n < 2) return false;
+    for (let i = 2; i <= Math.sqrt(n); i++) {
+      if (n % i === 0) return false;
+    }
+    return true;
+  }
+
   function handleQuery(query: string) {
-    // Extract all numbers from the query
     const numbers = query.match(/\d+/g)?.map(Number);
+
+    // Handle subtraction queries
+    const subtractionMatch = /what is (\d+) minus (\d+)\s*\?/i.exec(query);
+    if (subtractionMatch) {
+      const [_, num1, num2] = subtractionMatch.map(Number);
+      return `${num1 - num2}`;
+    }
 
     // Handle largest number queries
     if (query.toLowerCase().includes("largest") && numbers) {
@@ -44,6 +58,14 @@ export default function QueryProcessor(query: string): string {
       return sixthPowers.length > 0
         ? `${sixthPowers.join(", ")}`
         : "None of the numbers are both a square and a cube.";
+    }
+
+    // Handle prime number detection
+    if (query.toLowerCase().includes("which of the following numbers are primes") && numbers) {
+      const primes = numbers.filter(isPrime);
+      return primes.length > 0
+        ? `${primes.join(", ")}`
+        : "None of the numbers are prime.";
     }
 
     // Default response if no match
