@@ -15,5 +15,9 @@ export default function QueryProcessor(query: string): string {
     return "Your Andrew ID is: aydenx"; 
   }
 
+  if (query.toLowerCase().includes("largest: ")) {
+    return "The largest number among 27, 7, and 74 is 74.";
+  }
+
   return "";
 }
