@@ -21,7 +21,8 @@ export default function QueryProcessor(query: string): string {
     }
   
     // Handle addition queries
-    const additionMatch = query.toLowerCase().match(/what is (\d+) plus (\d+)\s*\?/);
+    const additionRegex = /what is (\d+) plus (\d+)\s*\?/i;
+    const additionMatch = additionRegex.exec(query);
     if (additionMatch) {
       const num1 = parseInt(additionMatch[1]);
       const num2 = parseInt(additionMatch[2]);
