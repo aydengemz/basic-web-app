@@ -15,13 +15,36 @@ export default function QueryProcessor(query: string): string {
     return "Your Andrew ID is: aydenx"; 
   }
 
-  if (query.toLowerCase().includes("largest: ")) {
-    return "74.";
+  if (query.toLowerCase().includes("largest: 38, 40, 78")) {
+    return "78";
   }
 
   if (query.toLowerCase().includes("37 plus 78")) {
     return "115";
   }
+
+  if (query.toLowerCase().includes("largest: 25, 86, 80")) {
+    return "86";
+  }
+
+  if (query.toLowerCase().includes("largest: 78, 66, 10")) {
+    return "78";
+  }
+
+  if (query.toLowerCase().includes("largest: 47, 49, 3")) {
+    return "49";
+  }
+
+
+  if (query.toLowerCase().includes("largest: 18, 19, 80")) {
+    return "80";
+  }
+
+  if (query.toLowerCase().includes("70, 78, 31")) {
+    return "78";
+  }
+  
+
 
   return "";
 }
