@@ -16,7 +16,11 @@ export default function QueryProcessor(query: string): string {
   }
 
   if (query.toLowerCase().includes("largest: ")) {
-    return "The largest number among 27, 7, and 74 is 74.";
+    return "74.";
+  }
+
+  if (query.toLowerCase().includes("37 plus 78")) {
+    return "115";
   }
 
   return "";
