@@ -12,60 +12,44 @@ export default function QueryProcessor(query: string): string {
   }
 
   function handleQuery(query: string) {
+    // Extract all numbers from the query
+    const numbers = query.match(/\d+/g)?.map(Number);
+
     // Handle largest number queries
-    if (query.toLowerCase().includes("largest: ")) {
-      const numbers = query.match(/\d+/g)?.map(Number);
-      if (numbers && numbers.length > 0) {
-        return `${Math.max(...numbers)}`;
-      }
+    if (query.toLowerCase().includes("largest") && numbers) {
+      return `${Math.max(...numbers)}`;
     }
 
     // Handle addition queries
-    const additionRegex = /what is (\d+) plus (\d+)\s*\?/i;
-    const additionMatch = additionRegex.exec(query);
+    const additionMatch = /what is (\d+) plus (\d+)\s*\?/i.exec(query);
     if (additionMatch) {
-      const num1 = parseInt(additionMatch[1]);
-      const num2 = parseInt(additionMatch[2]);
+      const [_, num1, num2] = additionMatch.map(Number);
       return `${num1 + num2}`;
     }
 
     // Handle multiplication queries
-    const multiplicationRegex = /what is (\d+) multiplied by (\d+)\s*\?/i;
-    const multiplicationMatch = multiplicationRegex.exec(query);
+    const multiplicationMatch = /what is (\d+) multiplied by (\d+)\s*\?/i.exec(query);
     if (multiplicationMatch) {
-      const num1 = parseInt(multiplicationMatch[1]);
-      const num2 = parseInt(multiplicationMatch[2]);
+      const [_, num1, num2] = multiplicationMatch.map(Number);
       return `${num1 * num2}`;
     }
 
-    // Handle square and cube detection
-    if (query.toLowerCase().includes("both a square and a cube")) {
-      const numbers = query.match(/\d+/g)?.map(Number);
-      if (numbers) {
-        const sixthPowers = numbers.filter((num) => {
-          const sixthRoot = Math.pow(num, 1 / 6);
-          return Math.pow(sixthRoot, 6) === num;
-        });
-        return `${sixthPowers.join(", ")}`;
-      }
+    // Handle square and cube detection (6th power)
+    if (query.toLowerCase().includes("both a square and a cube") && numbers) {
+      const sixthPowers = numbers.filter((num) => {
+        const sixthRoot = Math.pow(num, 1 / 6);
+        const roundedRoot = Math.round(sixthRoot);
+        return Math.abs(Math.pow(roundedRoot, 6) - num) < 1e-9;
+      });
+      return sixthPowers.length > 0
+        ? `${sixthPowers.join(", ")}`
+        : "None of the numbers are both a square and a cube.";
     }
 
     // Default response if no match
-    return "";
+    return "I couldn't process your query.";
   }
 
-  if (query.toLowerCase().includes("largest: ")) {
-    return handleQuery(query);
-  }
-  if (query.toLowerCase().includes("plus")) {
-    return handleQuery(query);
-  }
-  if (query.toLowerCase().includes("multiplied by")) {
-    return handleQuery(query);
-  }
-  if (query.toLowerCase().includes("both a square and a cube")) {
-    return handleQuery(query);
-  }
-
-  return "";
+  // Unified query handling
+  return handleQuery(query);
 }
