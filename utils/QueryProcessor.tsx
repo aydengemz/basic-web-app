@@ -43,7 +43,7 @@ export default function QueryProcessor(query: string): string {
       const numbers = query.match(/\d+/g)?.map(Number);
       if (numbers) {
         const sixthPowers = numbers.filter((num) => {
-          const sixthRoot = Math.round(Math.pow(num, 1 / 6));
+          const sixthRoot = Math.pow(num, 1 / 6);
           return Math.pow(sixthRoot, 6) === num;
         });
         return `${sixthPowers.join(", ")}`;
