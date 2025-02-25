@@ -46,7 +46,7 @@ export default function QueryProcessor(query: string): string {
           const sixthRoot = Math.round(Math.pow(num, 1 / 6));
           return Math.pow(sixthRoot, 6) === num;
         });
-        return `Numbers that are both square and cube: ${sixthPowers.join(", ")}`;
+        return `${sixthPowers.join(", ")}`;
       }
     }
 
