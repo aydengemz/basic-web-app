@@ -19,6 +19,39 @@ export default function QueryProcessor(query: string): string {
     return true;
   }
 
+
+  function findNumbersThatAreSquaresAndCubes(numbers: number[]): number[] {
+    const results: number[] = [];
+  
+    for (const x of numbers) {
+      let isSquare = false;
+      let isCube = false;
+  
+      // Check if x = y^2 for some y in the list
+      for (const y of numbers) {
+        if (y * y === x) {
+          isSquare = true;
+          break;
+        }
+      }
+  
+      // Check if x = z^3 for some z in the list
+      for (const z of numbers) {
+        if (z * z * z === x) {
+          isCube = true;
+          break;
+        }
+      }
+  
+      if (isSquare && isCube) {
+        results.push(x);
+      }
+    }
+  
+    return results;
+  }
+  
+
   function handleQuery(query: string) {
     const numbers = query.match(/\d+/g)?.map(Number);
 
@@ -49,19 +82,18 @@ export default function QueryProcessor(query: string): string {
     }
 
     // Handle square and cube detection (6th power)
-    if (query.toLowerCase().includes("both a square and a cube") && numbers) {
-      const sixthPowers = numbers.filter((num) => {
-        const sixthRoot = Math.pow(num, 1 / 6);
-        const roundedRoot = Math.round(sixthRoot);
-        return Math.abs(Math.pow(roundedRoot, 6) - num) < 1e-9;
-      });
-      return sixthPowers.length > 0
-        ? `${sixthPowers.join(", ")}`
+    if (
+      query.toLowerCase().includes("both a square and a cube") &&
+      numbers
+    ) {
+      const scNumbers = findNumbersThatAreSquaresAndCubes(numbers);
+      return scNumbers.length > 0
+        ? scNumbers.join(", ")
         : "None of the numbers are both a square and a cube.";
     }
 
     // Handle prime number detection
-    if (query.toLowerCase().includes("which of the following numbers are primes") && numbers) {
+    if (query.toLowerCase().includes("primes") && numbers) {
       const primes = numbers.filter(isPrime);
       return primes.length > 0
         ? `${primes.join(", ")}`
